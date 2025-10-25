@@ -83,3 +83,6 @@ console.log("findの結果:", foundNumber);
 
 const doubled = numbers.map(num => num * 2);
 console.log("mapの結果:", doubled);
+
+const even = numbers.filter(num => num % 2 === 0);
+console.log("filterの結果:", even);
