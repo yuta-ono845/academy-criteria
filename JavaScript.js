@@ -76,3 +76,10 @@ console.log(animals1);
 export const sum2 = (a, b) => a + b;
 
 export default animals1;
+
+const numbers = [1, 2, 3, 4, 5];
+const foundNumber = numbers.find(num => num > 3);
+console.log("findの結果:", foundNumber);
+
+const doubled = numbers.map(num => num * 2);
+console.log("mapの結果:", doubled);
