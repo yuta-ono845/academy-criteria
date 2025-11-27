@@ -86,3 +86,58 @@ console.log("mapの結果:", doubled);
 
 const even = numbers.filter(num => num % 2 === 0);
 console.log("filterの結果:", even);
+
+// No34  debugger
+function inspectProfile(profile) {
+    console.log("inspectProfile start", profile);
+    debugger; 
+    const nameUpper = profile?.myname?.toUpperCase?.(); // ?は左がundefinedやnullのときにエラーを出さずにundefinedを返す 
+                                                        // toUpperCase()は文字列を大文字に変換するメソッド
+    const age = profile?.age ?? "unknown";// ??は左がundefinedやnullのときに右を返す
+    console.log("inspectProfile resume", { nameUpper, age });
+}
+inspectProfile(profile); // profileはファイル上部で定義済みのオブジェクト
+
+// No39,40 Vanilla JSでのfetch API利用例（vanills.jsとは外部通信ライブラリを使わない純粋なJavaScriptの意）
+async function sendSampleData(data) {
+    console.log("sendSampleData: POST payload", data);
+    try {
+        const response = await fetch("https://example.com/api/sample", { // リクエスト送り、レスポンスを待つ
+            method: "POST", // post=データ送信
+            headers: { "Content-Type": "application/json" }, // JSON形式で送信することを指定
+            body: JSON.stringify(data), // dataオブジェクトをJSON文字列に変換
+        });
+        const text = await response.text();// 返信内容をテキストとして取得、読み取り完了まで待つ
+        console.log("sendSampleData: status", response.status, "body", text);// レスポンスのステータスコードと本文を表示
+    } catch (error) {
+        console.error("sendSampleData: fetch error (オフラインでもここを通る)", error);
+    }
+}
+// 実際に送信する場合はコメントアウトを外す（ネットワーク到達性がある環境で使用する）
+// sendSampleData({ userId: 1, comment: "評価用のサンプルデータ" });
+
+
+// No40 非同期処理async/await のデモ用関数
+function simulateRequest(data) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ ok: true, received: data });
+        }, 300);
+    });
+}
+
+// async/await で Promise を直列処理するデモ
+async function runAsyncDemo() {
+    try {
+        console.log("runAsyncDemo start");
+        const first = await simulateRequest({ step: 1 });
+        console.log("first response", first);
+        const second = await simulateRequest({ step: 2, prev: first.received });
+        console.log("second response", second);
+    } catch (error) {
+        console.error("runAsyncDemo error", error);
+    } finally {
+        console.log("runAsyncDemo finished (イベントループで順次実行)");
+    }
+}
+runAsyncDemo();
